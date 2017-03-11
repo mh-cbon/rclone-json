@@ -1,5 +1,4 @@
 // Package rclone-json streams an rclone sync activity as a json object stream.
-
 package main
 
 import (
