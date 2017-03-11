@@ -116,6 +116,7 @@ type RawMessage struct {
 	Type    string
 	Rule    string
 	Message string
+	Info    string
 }
 
 // GetType ...
@@ -143,7 +144,11 @@ func isRawMessage(line string) (RawMessage, bool) {
 		if reg.MatchString(line) {
 			t := reg.FindAllStringSubmatch(line, -1)
 			filePath := t[0][1]
-			return RawMessage{Type: "RawMessage", Rule: name, Message: filePath}, true
+			msg := RawMessage{Type: "RawMessage", Rule: name, Message: filePath}
+			if len(t[0]) > 1 {
+				msg.Info = t[0][1]
+			}
+			return msg, true
 		}
 	}
 	for name, reg := range infoReg {
