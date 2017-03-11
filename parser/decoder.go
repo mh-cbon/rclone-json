@@ -1,6 +1,8 @@
 // Package parser decodes an rclone output to Objects.
 package parser
 
+// tbd: add test for output parsing.
+
 import (
 	"io"
 	"regexp"
