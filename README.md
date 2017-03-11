@@ -6,7 +6,6 @@ Package rclone-json streams an rclone sync activity as a json object stream.
 
 
 ## Install
-Check the [release page](https://github.com/mh-cbon/rclone-json/releases)!
 
 ### Go
 
@@ -14,30 +13,6 @@ Check the [release page](https://github.com/mh-cbon/rclone-json/releases)!
 go get github.com/mh-cbon/rclone-json
 ```
 
-
-### Chocolatey
-```sh
-choco install rclone-json
-```
-
-### linux rpm/deb repository
-```sh
-wget -O - https://raw.githubusercontent.com/mh-cbon/latest/master/source.sh \
-| GH=mh-cbon/rclone-json sh -xe
-# or
-curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/source.sh \
-| GH=mh-cbon/rclone-json sh -xe
-```
-
-### linux rpm/deb standalone package
-```sh
-curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
-| GH=mh-cbon/rclone-json sh -xe
-# or
-wget -q -O - --no-check-certificate \
-https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
-| GH=mh-cbon/rclone-json sh -xe
-```
 
 ## Usage
 
