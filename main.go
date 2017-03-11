@@ -44,7 +44,7 @@ func main() {
 		usage(fmt.Sprint(`
 Wrong usage: Missing source or dest arguments.
 It should be:
-rclone-json stats [options] src/ dst/
+rclone-json sync [options] src/ dst/
 `))
 		os.Exit(1)
 	}
@@ -57,7 +57,7 @@ rclone-json stats [options] src/ dst/
 		test/dest/
 	*/
 
-	// _ := flag.Arg(0) // the cmd to run like stats or ls, not needed so far as only stats is implemented
+	// _ := flag.Arg(0) // the cmd to run like sync or ls, not needed so far as only sync is implemented
 	cmd.Src = flag.Arg(1)
 	cmd.Dst = flag.Arg(2)
 

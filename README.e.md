@@ -18,7 +18,7 @@
 ### Cli examples
 
 ```sh
-rclone-json stats src/ dst/
+rclone-json sync src/ dst/
 ```
 
 # Recipes
