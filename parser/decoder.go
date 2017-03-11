@@ -1,3 +1,4 @@
+// Package parser decodes an rclone output to Objects.
 package parser
 
 import (

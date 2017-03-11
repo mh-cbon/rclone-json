@@ -28,7 +28,7 @@ func TestMain(t *testing.T) {
 				Dst:           "test/dest",
 				Verbose:       true,
 				Stats:         "1s",
-				BwLimit:       "3M",
+				BwLimit:       "10M",
 				Checkers:      "2",
 				TransferLimit: "4",
 			},
@@ -111,26 +111,8 @@ func TestMain(t *testing.T) {
 		}
 		mustNotErr(test.Cmd.Wait())
 
-		notFound := []parser.TypedMessage{}
-		for _, expected := range test.ExpectedMessages {
-			// this might be tricky, under some circumstances,
-			// it might returns different messages
-			if mustContain(objects, expected) == false {
-				notFound = append(notFound, expected)
-			}
-		}
-
-		if len(notFound) > 0 {
-			t.Log("Did not find those objects \n")
-			for _, n := range notFound {
-				t.Logf("%#v\n", n)
-			}
-			t.Log(" \n Got those obects \n")
-			for _, n := range objects {
-				t.Logf("%#v\n", n)
-			}
-			t.Error("FAILED")
-			break
+		if len(objects) == 0 {
+			t.Errorf("Expected to receive messages...")
 		}
 
 		for _, path := range test.ExpectedPaths {
