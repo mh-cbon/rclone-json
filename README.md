@@ -19,7 +19,7 @@ go get github.com/mh-cbon/rclone-json
 
 ###### > main_example.go
 ```go
-package main_test
+package main
 
 import (
 	"encoding/json"
@@ -29,9 +29,7 @@ import (
 	"github.com/mh-cbon/rclone-json/rclone"
 )
 
-// ExampleGenerate demonstrates the generation
-// of the given README.e.md source file
-// to os.Stdout.
+// Example demonstrates usage of Rclone-json api.
 func Example() {
 
 	// make a new instance of rclone.Cmd.
