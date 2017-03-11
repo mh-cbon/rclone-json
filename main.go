@@ -10,8 +10,8 @@ import (
 	"github.com/mh-cbon/rclone-json/rclone"
 )
 
-// Version of the program
-var Version = "0.0.0"
+// VERSION of the program
+var VERSION = "0.0.0"
 
 func main() {
 
@@ -69,7 +69,7 @@ rclone-json sync [options] src/ dst/
 }
 
 func ver() {
-	fmt.Fprintf(os.Stderr, "rclone-json - %v\n", Version)
+	fmt.Fprintf(os.Stderr, "rclone-json - %v\n", VERSION)
 }
 
 func usage(err string) {
