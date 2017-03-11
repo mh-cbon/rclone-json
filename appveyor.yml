@@ -1,0 +1,19 @@
+version: "{build}"
+os: Windows Server 2012 R2
+clone_folder: c:\gopath\src\github.com\mh-cbon\rclone-json
+
+environment:
+  GOPATH: c:\gopath
+  GO15VENDOREXPERIMENT: 1
+  CHOCOKEY:
+    secure: HRc9tf57V3c3dVyn8hvMkKeiwK2oyWvOSjNXembIAQctNx+GTGBBaHI3bh+8cIgy
+  GHTOKEN:
+    secure: WVMaMjrLzXN8YNcnFRfcucTYWtvoDeE/4b2TUGQBZDvv7u+ERBQ///z5Q8qYSt0L
+
+install:
+  - set PATH=%GOPATH%\bin;c:\go\bin;%PATH%
+  - go version
+  - go env
+  - go test github.com/mh-cbon/rclone-json -v
+
+test: off
