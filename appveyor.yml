@@ -18,3 +18,5 @@ install:
 
 test_script:
   - go test github.com/mh-cbon/rclone-json -v
+
+build: off
