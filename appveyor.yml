@@ -15,6 +15,6 @@ install:
   - go version
   - go env
   - go get -u -v github.com/ncw/rclone
-  - go test github.com/mh-cbon/rclone-json -v
 
-test: off
+test:
+  - go test github.com/mh-cbon/rclone-json -v
