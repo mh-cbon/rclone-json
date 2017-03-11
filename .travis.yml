@@ -4,6 +4,7 @@ go:
 
 install:
   - cd $GOPATH/src/github.com/mh-cbon/$MYAPP
+  - go get -u -v github.com/ncw/rclone
   - go install
 
 script: go test

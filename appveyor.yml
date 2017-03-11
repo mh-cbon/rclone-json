@@ -14,6 +14,7 @@ install:
   - set PATH=%GOPATH%\bin;c:\go\bin;%PATH%
   - go version
   - go env
+  - go get -u -v github.com/ncw/rclone
   - go test github.com/mh-cbon/rclone-json -v
 
 test: off
