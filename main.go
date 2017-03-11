@@ -50,11 +50,13 @@ rclone-json stats [options] src/ dst/
 		os.Exit(1)
 	}
 
-	// rclone \
-	// sync -vv --stats 1s --bwlimit 500k --checkers 2 \
-	// --transfers 20 \
-	// ~/test/rclone-v1.35-linux-amd64/source/ \
-	// ~/test/rclone-v1.35-linux-amd64/dest/
+	/*
+		rclone \
+		sync -vv --stats 1s --bwlimit 500k --checkers 2 \
+		--transfers 20 \
+		test/source/ \
+		test/dest/
+	*/
 
 	// _ := flag.Arg(0) // the cmd to run like stats or ls, not needed so far as only stats is implemented
 	cmd.Src = flag.Arg(1)

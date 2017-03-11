@@ -3,6 +3,7 @@ package main
 import (
 	"io"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/mh-cbon/rclone-json/parser"
@@ -17,6 +18,8 @@ type rCloneTests struct {
 
 func TestMain(t *testing.T) {
 
+	base, _ := os.Getwd()
+
 	tests := []rCloneTests{
 		rCloneTests{
 			Cmd: &rclone.Command{
@@ -25,7 +28,7 @@ func TestMain(t *testing.T) {
 				Dst:           "test/dest",
 				Verbose:       true,
 				Stats:         "1s",
-				BwLimit:       "5M",
+				BwLimit:       "3M",
 				Checkers:      "2",
 				TransferLimit: "4",
 			},
@@ -42,9 +45,9 @@ func TestMain(t *testing.T) {
 			ExpectedMessages: []parser.TypedMessage{
 				parser.RawMessage{Type: "RawMessage", Rule: "bwlimit", Message: "5MBytes/s"},
 				parser.RawMessage{Type: "RawMessage", Rule: "version", Message: "v1.35-DEV"},
-				parser.RawMessage{Type: "RawMessage", Rule: "modifywindow", Message: "/home/mh-cbon/gow/src/github.com/mh-cbon/rclone-parser/test/dest"},
-				parser.RawMessage{Type: "RawMessage", Rule: "waitingchecks", Message: "/home/mh-cbon/gow/src/github.com/mh-cbon/rclone-parser/test/dest"},
-				parser.RawMessage{Type: "RawMessage", Rule: "waitingtransfers", Message: "/home/mh-cbon/gow/src/github.com/mh-cbon/rclone-parser/test/dest"},
+				parser.RawMessage{Type: "RawMessage", Rule: "modifywindow", Message: filepath.Join(base, "/test/dest")},
+				parser.RawMessage{Type: "RawMessage", Rule: "waitingchecks", Message: filepath.Join(base, "/test/dest")},
+				parser.RawMessage{Type: "RawMessage", Rule: "waitingtransfers", Message: filepath.Join(base, "/test/dest")},
 				parser.GeneralStatMessage{Type: "GeneralStat"},
 				parser.FileStatMessage{Type: "FileStat", File: "file1"},
 				parser.FileStatMessage{Type: "FileStat", File: "file2"},
@@ -108,13 +111,17 @@ func TestMain(t *testing.T) {
 		}
 		mustNotErr(test.Cmd.Wait())
 
-		for e, expected := range test.ExpectedMessages {
+		notFound := []parser.TypedMessage{}
+		for _, expected := range test.ExpectedMessages {
 			// this might be tricky, under some circumstances,
 			// it might returns different messages
 			if mustContain(objects, expected) == false {
-				t.Errorf("Cannot find object %v expected=%#v\n", e, expected)
-				break
+				notFound = append(notFound, expected)
 			}
+		}
+
+		if len(notFound) > 0 {
+			t.Errorf("Did not find those objects %#v\n", notFound)
 		}
 
 		for _, path := range test.ExpectedPaths {
