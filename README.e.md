@@ -7,6 +7,10 @@
 ### Go
 {{template "go/install" .}}
 
+## API example
+
+{{file "main_example.go"}}
+
 ## Usage
 
 {{cli "rclone-json" "-help"}}
