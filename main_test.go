@@ -94,7 +94,7 @@ func TestMain(t *testing.T) {
 	for _, test := range tests {
 
 		mustNotErr(os.RemoveAll(test.Cmd.Dst))
-		mustNotErr(os.Mkdir(test.Cmd.Dst, os.ModePerm))
+		mustNotErr(os.MkdirAll(test.Cmd.Dst, os.ModePerm))
 
 		mustNotErr(test.Cmd.Start())
 		var objects []parser.TypedMessage

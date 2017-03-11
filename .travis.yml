@@ -3,7 +3,7 @@ go:
   - 1.8
 
 install:
-  - cd $GOPATH/src/github.com/mh-cbon/$MYAPP
+  - cd $GOPATH/src/github.com/mh-cbon/rclone-json
   - go get -u -v github.com/ncw/rclone
   - go install
 
