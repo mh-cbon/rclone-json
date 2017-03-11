@@ -8,9 +8,7 @@ import (
 	"github.com/mh-cbon/rclone-json/rclone"
 )
 
-// ExampleGenerate demonstrates the generation
-// of the given README.e.md source file
-// to os.Stdout.
+// Example demonstrates usage of Rclone-json api.
 func Example() {
 
 	// make a new instance of rclone.Cmd.
