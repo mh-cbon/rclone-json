@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -121,7 +122,16 @@ func TestMain(t *testing.T) {
 		}
 
 		if len(notFound) > 0 {
-			t.Errorf("Did not find those objects %#v\n", notFound)
+			t.Log("Did not find those objects \n")
+			for _, n := range notFound {
+				fmt.Printf("%#v\n", n)
+			}
+			t.Log(" \n Got those obects \n")
+			for _, n := range objects {
+				fmt.Printf("%#v\n", n)
+			}
+			t.Error("FAILED")
+			break
 		}
 
 		for _, path := range test.ExpectedPaths {
