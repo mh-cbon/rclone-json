@@ -8,6 +8,15 @@ import (
 	"regexp"
 )
 
+// TypeRawMessage is the type identifier for a Raw message.
+var TypeRawMessage = "Raw"
+
+// TypeGeneralStatMessage is the type identifier for a GeneralStat message.
+var TypeGeneralStatMessage = "GeneralStat"
+
+// TypeFileStatMessage is the type identifier for a FileStat message.
+var TypeFileStatMessage = "FileStat"
+
 // TypedMessage ...
 type TypedMessage interface {
 	GetType() string
@@ -140,14 +149,14 @@ func isRawMessage(line string) (RawMessage, bool) {
 		if reg.MatchString(line) {
 			t := reg.FindAllStringSubmatch(line, -1)
 			filePath := t[0][1]
-			return RawMessage{Type: "RawMessage", Rule: name, Message: filePath}, true
+			return RawMessage{Type: TypeRawMessage, Rule: name, Message: filePath}, true
 		}
 	}
 	for name, reg := range localReg {
 		if reg.MatchString(line) {
 			t := reg.FindAllStringSubmatch(line, -1)
 			filePath := t[0][1]
-			msg := RawMessage{Type: "RawMessage", Rule: name, Message: filePath}
+			msg := RawMessage{Type: TypeRawMessage, Rule: name, Message: filePath}
 			if len(t[0]) > 1 {
 				msg.Info = t[0][1]
 			}
@@ -158,7 +167,7 @@ func isRawMessage(line string) (RawMessage, bool) {
 		if reg.MatchString(line) {
 			t := reg.FindAllStringSubmatch(line, -1)
 			filePath := t[0][1]
-			return RawMessage{Type: "RawMessage", Rule: name, Message: filePath}, true
+			return RawMessage{Type: TypeRawMessage, Rule: name, Message: filePath}, true
 		}
 	}
 	return RawMessage{}, false
@@ -203,32 +212,32 @@ func isGeneralStatMessage(line string, g *GeneralStatMessage) (bool, *GeneralSta
 			t := reg.FindAllStringSubmatch(line, -1)
 			if name == "transferred" {
 				if g == nil {
-					g = &GeneralStatMessage{Type: "GeneralStat"}
+					g = &GeneralStatMessage{Type: TypeGeneralStatMessage}
 				}
 				// transferred: [][]string{[]string{"Transferred:   2.012 MBytes (630.953 kBytes/s)", "2.012", "MBytes", "630.953 kBytes/s"}}
 				g.TotalTransferred = t[0][1] + " " + t[0][2]
 				g.TotalSpeed = t[0][3]
 			} else if name == "elapsedTime" {
 				if g == nil {
-					g = &GeneralStatMessage{Type: "GeneralStat"}
+					g = &GeneralStatMessage{Type: TypeGeneralStatMessage}
 				}
 				// elapsedTime: [][]string{[]string{"Elapsed time:        3.2s", "3.2s"}}
 				g.ElapsedTime = t[0][1]
 			} else if name == "transferredCnt" {
 				if g == nil {
-					g = &GeneralStatMessage{Type: "GeneralStat"}
+					g = &GeneralStatMessage{Type: TypeGeneralStatMessage}
 				}
 				// transferredCnt: [][]string{[]string{"Transferred:            0", "0"}}
 				g.TotalTransferredCnt = t[0][1]
 			} else if name == "checksCnt" {
 				if g == nil {
-					g = &GeneralStatMessage{Type: "GeneralStat"}
+					g = &GeneralStatMessage{Type: TypeGeneralStatMessage}
 				}
 				// checksCnt: [][]string{[]string{"Checks:                11", "11"}}
 				g.ChecksCnt = t[0][1]
 			} else if name == "errorsCnt" {
 				if g == nil {
-					g = &GeneralStatMessage{Type: "GeneralStat"}
+					g = &GeneralStatMessage{Type: TypeGeneralStatMessage}
 				}
 				// errorsCnt: [][]string{[]string{"Errors:                 0", "0"}}
 				g.ErrorsCnt = t[0][1]
@@ -267,7 +276,7 @@ func (f FileStatMessage) Compare(left TypedMessage) bool {
 }
 
 func isFileStatMessage(line string) (FileStatMessage, bool) {
-	ret := FileStatMessage{Type: "FileStat"}
+	ret := FileStatMessage{Type: TypeFileStatMessage}
 	for _, reg := range filestatsReg {
 		if reg.MatchString(line) {
 			t := reg.FindAllStringSubmatch(line, -1)
