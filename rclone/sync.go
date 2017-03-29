@@ -1,4 +1,3 @@
-// Package rclone embeds rclone binary invocation and processing.
 package rclone
 
 import (
@@ -9,12 +8,11 @@ import (
 	"github.com/mh-cbon/rclone-json/parser"
 )
 
-var rclonePath = "rclone"
-
-//Command ...
-type Command struct {
+//Sync ...
+type Sync struct {
 	cmd           *exec.Cmd
 	decoder       *parser.Decoder
+	stderr        io.Closer
 	BinPath       string
 	Stdout        io.Writer
 	Src           string
@@ -27,15 +25,15 @@ type Command struct {
 }
 
 // New returns a new rclone Command.
-func New(dst, src string) *Command {
-	return &Command{
+func New(dst, src string) *Sync {
+	return &Sync{
 		Verbose: true,
 		Dst:     dst,
 		Src:     src,
 	}
 }
 
-func (r *Command) args() []string {
+func (r *Sync) args() []string {
 	ret := []string{"sync"}
 	if r.Verbose {
 		ret = append(ret, "-vv")
@@ -56,7 +54,7 @@ func (r *Command) args() []string {
 }
 
 //Start ...
-func (r *Command) Start() error {
+func (r *Sync) Start() error {
 	if r.cmd != nil {
 		return fmt.Errorf("command already %v", "started")
 	}
@@ -79,7 +77,7 @@ func (r *Command) Start() error {
 }
 
 //Read ...
-func (r *Command) Read() ([]parser.TypedMessage, error) {
+func (r *Sync) Read() ([]parser.TypedMessage, error) {
 	return r.decoder.ReadObjects()
 }
 
@@ -89,7 +87,7 @@ type encoder interface {
 }
 
 //ConvertTo ...
-func (r *Command) ConvertTo(w encoder) error {
+func (r *Sync) ConvertTo(w encoder) error {
 	for {
 		olist, err := r.Read()
 
@@ -109,12 +107,29 @@ func (r *Command) ConvertTo(w encoder) error {
 }
 
 //Wait ...
-func (r *Command) Wait() error {
+func (r *Sync) Wait() error {
 	if r.cmd == nil {
 		return fmt.Errorf("command not %v", "started")
 	}
 	err := r.cmd.Wait()
-	r.cmd = nil
-	r.decoder = nil
+	if r.stderr != nil {
+		r.stderr.Close()
+	}
+	// r.cmd = nil
+	// r.decoder = nil
+	return err
+}
+
+//Kill ...
+func (r *Sync) Kill() error {
+	if r.cmd == nil {
+		return fmt.Errorf("command not %v", "started")
+	}
+	if r.cmd.Process == nil {
+		return fmt.Errorf("command already %v", "finished")
+	}
+	err := r.cmd.Process.Kill()
+	// r.cmd = nil
+	// r.decoder = nil
 	return err
 }

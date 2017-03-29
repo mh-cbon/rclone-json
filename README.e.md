@@ -15,6 +15,10 @@
 
 {{cli "rclone-json" "-help"}}
 
+{{cli "rclone-json" "sync" "-help"}}
+{{cli "rclone-json" "check" "-help"}}
+{{cli "rclone-json" "size" "-help"}}
+
 ### Cli examples
 
 ```sh

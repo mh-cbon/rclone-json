@@ -13,59 +13,132 @@ import (
 // VERSION of the program
 var VERSION = "0.0.0"
 
+type cliargs struct {
+	version       bool
+	help          bool
+	binPath       string
+	bwlimit       string
+	stats         string
+	checker       string
+	transferlimit string
+}
+
 func main() {
 
-	version := false
-	help := false
-	cmd := rclone.New("", "")
+	args := cliargs{}
 
-	flag.BoolVar(&version, "version", false, "Show version")
-	flag.BoolVar(&help, "help", false, "Show help")
-	flag.StringVar(&cmd.BinPath, "rclone", "rclone", "")
-	flag.StringVar(&cmd.BwLimit, "bwlimit", "", "")
-	flag.StringVar(&cmd.Stats, "stats", "", "")
-	flag.StringVar(&cmd.Checkers, "checkers", "", "")
-	flag.StringVar(&cmd.TransferLimit, "transfers", "", "")
+	flag.BoolVar(&args.version, "version", false, "Show version")
+	flag.BoolVar(&args.help, "help", false, "Show help")
+	flag.StringVar(&args.binPath, "rclone", "rclone", "")
+
+	flag.StringVar(&args.bwlimit, "bwlimit", "", "")
+	flag.StringVar(&args.stats, "stats", "", "")
+	flag.StringVar(&args.checker, "checkers", "", "")
+	flag.StringVar(&args.transferlimit, "transfers", "", "")
 	flag.Parse()
 
-	if version {
+	if args.version {
 		ver()
 		os.Exit(0)
 		return
 	}
 
-	if help {
+	if args.help {
 		usage("")
 		os.Exit(0)
 		return
 	}
 
-	if flag.NArg() != 3 {
+	if flag.NArg() < 1 {
 		usage(fmt.Sprint(`
-Wrong usage: Missing source or dest arguments.
-It should be:
-rclone-json sync [options] src/ dst/
+Wrong usage: Missing subcommand.
+Excpected one of check|size|sync
 `))
 		os.Exit(1)
 	}
+	subcmd := flag.Arg(0) // the cmd to run like sync / size / check
 
-	/*
-		rclone \
-		sync -vv --stats 1s --bwlimit 500k --checkers 2 \
-		--transfers 20 \
-		test/source/ \
-		test/dest/
-	*/
+	if subcmd == "sync" {
 
-	// _ := flag.Arg(0) // the cmd to run like sync or ls, not needed so far as only sync is implemented
-	cmd.Src = flag.Arg(1)
-	cmd.Dst = flag.Arg(2)
+		if flag.NArg() != 3 {
+			usage(fmt.Sprint(`
+			Wrong usage: Missing source or dest arguments.
+			It should be:
+			rclone-json sync [options] src/ dst/
+			`))
+			os.Exit(1)
+		}
 
-	cmd.Stdout = os.Stderr
+		/*
+			rclone \
+			sync -vv --stats 1s --bwlimit 500k --checkers 2 \
+			--transfers 20 \
+			test/source/ \
+			test/dest/
+		*/
 
-	mustNotErr(cmd.Start())
-	mustNotErr(cmd.ConvertTo(json.NewEncoder(os.Stdout)))
-	mustNotErr(cmd.Wait())
+		cmd := rclone.New(flag.Arg(1), flag.Arg(2))
+
+		cmd.BinPath = args.binPath
+		cmd.Verbose = true
+		cmd.BwLimit = args.bwlimit
+		cmd.Stats = args.stats
+		cmd.Checkers = args.checker
+		cmd.TransferLimit = args.transferlimit
+
+		cmd.Stdout = os.Stderr
+
+		mustNotErr(cmd.Start())
+		mustNotErr(cmd.ConvertTo(json.NewEncoder(os.Stdout)))
+		mustNotErr(cmd.Wait())
+
+	} else if subcmd == "size" {
+
+		if flag.NArg() != 2 {
+			usage(fmt.Sprint(`
+			Wrong usage: Missing source arguments.
+			It should be:
+			rclone-json size [options] src/
+			`))
+			os.Exit(1)
+		}
+
+		cmd := rclone.NewSize(flag.Arg(1))
+
+		cmd.BinPath = args.binPath
+		mustNotErr(cmd.Exec())
+
+		b, err := json.Marshal(cmd.Res)
+		mustNotErr(err)
+		os.Stdout.Write(b)
+
+	} else if subcmd == "check" {
+
+		if flag.NArg() != 3 {
+			usage(fmt.Sprint(`
+			Wrong usage: Missing source or dest arguments.
+			It should be:
+			rclone-json check [options] src/ dst/
+			`))
+			os.Exit(1)
+		}
+
+		cmd := rclone.NewSize(flag.Arg(1))
+
+		cmd.BinPath = args.binPath
+		mustNotErr(cmd.Exec())
+
+		b, err := json.Marshal(cmd.Res)
+		mustNotErr(err)
+		os.Stdout.Write(b)
+
+	} else {
+		usage(fmt.Sprintf(`
+		Wrong usage: Uknown sub command %q
+		Excpected one of check|size|sync
+		`, subcmd))
+		os.Exit(1)
+	}
 }
 
 func ver() {

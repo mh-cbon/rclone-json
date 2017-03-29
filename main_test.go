@@ -11,7 +11,7 @@ import (
 )
 
 type rCloneTests struct {
-	Cmd              *rclone.Command
+	Cmd              *rclone.Sync
 	ExpectedPaths    []string
 	ExpectedMessages []parser.TypedMessage
 }
@@ -22,7 +22,7 @@ func TestMain(t *testing.T) {
 
 	tests := []rCloneTests{
 		rCloneTests{
-			Cmd: &rclone.Command{
+			Cmd: &rclone.Sync{
 				Stdout:        os.Stderr,
 				Src:           "test/source",
 				Dst:           "test/dest",

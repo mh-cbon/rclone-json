@@ -56,7 +56,7 @@ func (l *Decoder) ReadObjects() ([]TypedMessage, error) {
 					ret = append(ret, l.gm)
 					l.gm = nil
 				}
-				ret = append(ret, raw)
+				ret = append(ret, &raw)
 			}
 			if ok, g := isGeneralStatMessage(line, l.gm); ok {
 				l.gm = g
@@ -67,7 +67,7 @@ func (l *Decoder) ReadObjects() ([]TypedMessage, error) {
 					ret = append(ret, l.gm)
 					l.gm = nil
 				}
-				ret = append(ret, f)
+				ret = append(ret, &f)
 			}
 		}
 	}
