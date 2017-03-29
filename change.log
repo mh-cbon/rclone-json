@@ -1,4 +1,15 @@
 
+0.0.2
+
+  * Code refactoring to allow new commands
+  * added new commands size/check
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Wed, 29 Mar 2017 13:35:21 +0200
+
+
+
 0.0.1
 
   * Initial commit
