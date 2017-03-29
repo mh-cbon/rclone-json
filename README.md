@@ -61,32 +61,18 @@ func Example() {
 rclone-json - 0.0.0
 Usage of rclone-json:
   -bwlimit string
-
+    	
   -checkers string
-
+    	
   -help
     	Show help
   -rclone string
     	 (default "rclone")
   -stats string
-
+    	
   -transfers string
-
+    	
   -version
     	Show version
 ```
 
-### Cli examples
-
-```sh
-rclone-json sync src/ dst/
-```
-
-# Recipes
-
-### Release the project
-
-```sh
-gump patch -d # check
-gump patch # bump
-```

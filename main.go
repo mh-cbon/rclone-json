@@ -62,9 +62,9 @@ Excpected one of check|size|sync
 
 		if flag.NArg() != 3 {
 			usage(fmt.Sprint(`
-			Wrong usage: Missing source or dest arguments.
-			It should be:
-			rclone-json sync [options] src/ dst/
+Wrong usage: Missing source or dest arguments.
+It should be:
+rclone-json sync [options] src/ dst/
 			`))
 			os.Exit(1)
 		}
@@ -96,9 +96,9 @@ Excpected one of check|size|sync
 
 		if flag.NArg() != 2 {
 			usage(fmt.Sprint(`
-			Wrong usage: Missing source arguments.
-			It should be:
-			rclone-json size [options] src/
+Wrong usage: Missing source arguments.
+It should be:
+rclone-json size [options] src/
 			`))
 			os.Exit(1)
 		}
@@ -116,9 +116,9 @@ Excpected one of check|size|sync
 
 		if flag.NArg() != 3 {
 			usage(fmt.Sprint(`
-			Wrong usage: Missing source or dest arguments.
-			It should be:
-			rclone-json check [options] src/ dst/
+Wrong usage: Missing source or dest arguments.
+It should be:
+rclone-json check [options] src/ dst/
 			`))
 			os.Exit(1)
 		}
