@@ -15,14 +15,12 @@
 
 {{cli "rclone-json" "-help"}}
 
-{{cli "rclone-json" "sync" "-help"}}
-{{cli "rclone-json" "check" "-help"}}
-{{cli "rclone-json" "size" "-help"}}
-
 ### Cli examples
 
 ```sh
 rclone-json sync src/ dst/
+rclone-json check src/ dst/
+rclone-json size src/
 ```
 
 # Recipes
