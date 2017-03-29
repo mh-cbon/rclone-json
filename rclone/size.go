@@ -55,10 +55,12 @@ func (r *Size) Exec() error {
 	   Total size: 43.389 MBytes (45497088 Bytes)
 	*/
 	s := oCntRegexp.FindAllStringSubmatch(string(out), -1)
-	r.Res.ObjectsCount = s[0][1]
-	h := sizeRegexp.FindAllStringSubmatch(string(out), -1)
-	r.Res.Size = strings.TrimSpace(h[0][1])
-	r.Res.Bytes = h[0][2]
+	if len(s) > 0 {
+		r.Res.ObjectsCount = s[0][1]
+		h := sizeRegexp.FindAllStringSubmatch(string(out), -1)
+		r.Res.Size = strings.TrimSpace(h[0][1])
+		r.Res.Bytes = h[0][2]
+	}
 	return nil
 }
 
